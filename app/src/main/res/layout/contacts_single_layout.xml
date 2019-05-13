@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                                   xmlns:app="http://schemas.android.com/apk/res-auto"
+                                                   android:layout_width="match_parent"
+                                                   android:layout_height="wrap_content">
+
+
+    <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="70dp">
+
+        <android.support.v7.widget.CardView
+                android:id="@+id/contactCardView"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                app:cardCornerRadius="25dp"
+                app:cardElevation="0dp"
+                app:cardBackgroundColor="#f1f1f1"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView android:layout_width="match_parent"
+                       android:layout_height="match_parent"
+            android:id="@+id/contactImageView"/>
+
+            <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textColor="#000"
+                    android:gravity="center"
+                    android:id="@+id/contactText1"/>
+
+        </android.support.v7.widget.CardView>
+
+
+        <TextView
+                android:id="@+id/contactText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:text="Ankit"
+                android:textColor="@color/black"
+                android:textSize="16dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@id/contactCardView"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        <android.support.v7.widget.CardView
+                android:id="@+id/contactButtonCardView"
+                android:layout_width="60dp"
+                android:layout_height="32dp"
+                app:cardElevation="0dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="8dp"
+
+
+                app:cardBackgroundColor="#f1f1f1"
+
+                app:cardCornerRadius="18dp"
+
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="INVITE"
+                    android:textColor="#000"
+                    android:textStyle="bold"
+                    android:textSize="14sp" />
+        </android.support.v7.widget.CardView>
+
+
+
+
+
+
+
+
+    </android.support.constraint.ConstraintLayout>
+
+
+
+
+</android.support.constraint.ConstraintLayout>

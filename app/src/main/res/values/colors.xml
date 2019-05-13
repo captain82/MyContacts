@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#EEEEEE</color>
+    <!--<color name="colorPrimaryDark">#E0E0E0</color>-->
+    <color name="colorAccent">#0EADFF</color>
+
+    <color name="colorPrimaryDark">#F0F0F0</color>
+
+    <color name="black">#000000</color>
+    <color name="white">#FFFFFF</color>
+    <color name="fafafa_color">#FAFAFA</color>
+    <color name="green">#0CB68F</color>
+
+    <color name="seperator_color">#D2D3D8</color>
+    <color name="statusbar_color">#FFFFFF</color>
+    <color name="buttonfillcolor">#11AEFF</color>
+    <color name="buttonfillcolortransperancy">#CC11AEFF</color>
+    <color name="hinttext_color">#E9EDF0</color>
+
+    <!--<color name="messagecolor">#d0d6da</color>-->
+    <color name="messagecolor">#D2D3D8</color>
+
+    <color name="grey">#D2D3D8</color>
+    <color name="red">#D50000</color>
+
+    <color name="colorTransparent">#00FFFFFF</color>
+
+    <color name="colorGradientStart">#FEBF1A</color>
+    <color name="colorGradientCenter">#FF6002</color>
+    <color name="colorGradientEnd">#FF247E</color>
+
+    <color name="blackShade">#4F050505</color>
+
+    <color name="blackShade2">#8C050505</color>
+
+    <color name="blackShade3">#56050505</color>
+    <color name="light_white">#80ffffff</color>
+
+    <color name="transparent_white">#F2FFFFFF</color>
+
+
+</resources>
