@@ -41,11 +41,17 @@ class MainActivity : AppCompatActivity() {
 
             val number = contacts.getString(contacts.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
 
+            val id = contacts.getString(contacts.getColumnIndex(ContactsContract.Contacts._ID))
+
+
+
             val obj = ContactDTO()
 
             obj.name = name
 
             obj.number = number
+
+            obj.id = id
 
             val photoUri = contacts.getString(contacts.getColumnIndex(ContactsContract.CommonDataKinds.Phone.PHOTO_URI))
             if (photoUri != null) {

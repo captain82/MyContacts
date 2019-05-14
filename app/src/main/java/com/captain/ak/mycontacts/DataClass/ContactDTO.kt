@@ -9,4 +9,6 @@ class ContactDTO {
     var number = ""
 
     var image : Bitmap? = null
+
+    var id:String = ""
 }

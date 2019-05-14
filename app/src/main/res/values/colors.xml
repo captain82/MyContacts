@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#EEEEEE</color>
+    <color name="colorPrimary">#0EADFF</color>
     <!--<color name="colorPrimaryDark">#E0E0E0</color>-->
     <color name="colorAccent">#0EADFF</color>
 
-    <color name="colorPrimaryDark">#F0F0F0</color>
+    <color name="colorPrimaryDark">#0EADFF</color>
 
     <color name="black">#000000</color>
     <color name="white">#FFFFFF</color>
