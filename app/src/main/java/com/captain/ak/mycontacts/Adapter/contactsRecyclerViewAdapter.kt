@@ -2,6 +2,7 @@ package com.captain.ak.mycontacts.Adapter
 
 import android.content.Context
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,6 +29,7 @@ class contactsRecyclerViewAdapter(items:List<ContactDTO>, val context: Context):
     override fun onBindViewHolder(p0: ViewHolder, p1: Int) {
 
         p0.contactText.text =list[p1].name
+        Log.i("Details" , list[p1].email+" "+list[p1].id+" "+list[p1].name+" "+list[p1].number)
         if (list[p1].image!=null)
         {
             p0.contactText1.visibility = View.INVISIBLE

@@ -11,4 +11,6 @@ class ContactDTO {
     var image : Bitmap? = null
 
     var id:String = ""
+
+    var email:String = ""
 }
