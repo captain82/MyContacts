@@ -1,7 +1,6 @@
-package com.captain.ak.mycontacts
+package com.captain.ak.mycontacts.Activities
 
 import android.content.ContentResolver
-import android.database.Cursor
 import android.net.Uri
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -12,18 +11,10 @@ import com.captain.ak.mycontacts.Adapter.contactsRecyclerViewAdapter
 import com.captain.ak.mycontacts.DataClass.ContactDTO
 import kotlinx.android.synthetic.main.activity_main.*
 import android.util.Log
-import android.R.id
 import android.os.Build
 import android.annotation.SuppressLint
-import android.R.attr.phoneNumber
-import android.R.attr.name
 import android.text.TextUtils
-
-
-
-
-
-
+import com.captain.ak.mycontacts.R
 
 
 class MainActivity : AppCompatActivity() {
