@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity() {
 
     @SuppressLint("InlinedApi")
     private val PROJECTION =
-        arrayOf(ContactsContract.Contacts._ID, DISPLAY_NAME, ContactsContract.Contacts.HAS_PHONE_NUMBER)
+        arrayOf(ContactsContract.Contacts._ID, DISPLAY_NAME, ContactsContract.Contacts.HAS_PHONE_NUMBER,ContactsContract.Contacts.PHOTO_URI)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -96,6 +96,12 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
 
+
+
+                val photoUri = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.PHOTO_URI))
+
+
+
                 // if the user user has an email or phone then add it to contacts
                 if ((!TextUtils.isEmpty(email) && android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
                             && !email!!.equals(name, ignoreCase = true)) || !TextUtils.isEmpty(phone)
@@ -105,6 +111,9 @@ class MainActivity : AppCompatActivity() {
                     contact.id = id
                     contact.email = email!!
                     contact.number = phone!!
+                    if (photoUri != null){
+                        contact.image = MediaStore.Images.Media.getBitmap(cr, Uri.parse(photoUri))
+                    }
                     contacts.add(contact)
                 }
 
