@@ -13,13 +13,16 @@ import kotlinx.android.synthetic.main.activity_main.*
 import android.util.Log
 import android.os.Build
 import android.annotation.SuppressLint
+import android.os.AsyncTask
 import android.text.TextUtils
-import com.captain.ak.mycontacts.R
+import android.widget.ArrayAdapter
+import android.app.ProgressDialog
+import android.R
 
 
 class MainActivity : AppCompatActivity() {
 
-    private val DISPLAY_NAME = if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+    private val DISPLAY_NAME = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
         ContactsContract.Contacts.DISPLAY_NAME_PRIMARY
     else
         ContactsContract.Contacts.DISPLAY_NAME
@@ -30,12 +33,34 @@ class MainActivity : AppCompatActivity() {
 
     @SuppressLint("InlinedApi")
     private val PROJECTION =
-        arrayOf(ContactsContract.Contacts._ID, DISPLAY_NAME, ContactsContract.Contacts.HAS_PHONE_NUMBER,ContactsContract.Contacts.PHOTO_URI)
+        arrayOf(
+            ContactsContract.Contacts._ID,
+            DISPLAY_NAME,
+            ContactsContract.Contacts.HAS_PHONE_NUMBER,
+            ContactsContract.Contacts.PHOTO_URI
+        )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(com.captain.ak.mycontacts.R.layout.activity_main)
 
+
+        object : AsyncTask<Void, Void, ArrayList<ContactDTO>>() {
+            override fun onPreExecute() {
+
+            }// End of onPreExecute method
+
+            @SuppressLint("WrongThread")
+            override fun doInBackground(vararg params: Void): ArrayList<ContactDTO>? {
+                setUpRecyclerView1()
+                return null
+
+            }// End of doInBackground method
+
+            override fun onPostExecute(result: ArrayList<ContactDTO>?) {
+
+            }//End of onPostExecute method
+        }.execute()
 
     }
 
@@ -43,12 +68,12 @@ class MainActivity : AppCompatActivity() {
         super.onResume()
 
         //setUpRecyclerView()
-        setUpRecyclerView1()
+        //setUpRecyclerView1()
     }
 
     private fun setUpRecyclerView1() {
 
-        val contacts:MutableList<ContactDTO> = ArrayList()
+        val contacts: MutableList<ContactDTO> = ArrayList()
 
         val cr = applicationContext.contentResolver
 
@@ -70,7 +95,7 @@ class MainActivity : AppCompatActivity() {
                 )
                 if (ce != null && ce.moveToFirst()) {
                     email = ce.getString(ce.getColumnIndex(ContactsContract.CommonDataKinds.Email.DATA))
-                    Log.i("Email" ,email)
+                    Log.i("Email", email)
                     ce.close()
                 }
 
@@ -88,9 +113,7 @@ class MainActivity : AppCompatActivity() {
                 }
 
 
-
                 val photoUri = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.PHOTO_URI))
-
 
 
                 // if the user user has an email or phone then add it to contacts
@@ -102,7 +125,7 @@ class MainActivity : AppCompatActivity() {
                     contact.id = id
                     contact.email = email!!
                     contact.number = phone!!
-                    if (photoUri != null){
+                    if (photoUri != null) {
                         contact.image = MediaStore.Images.Media.getBitmap(cr, Uri.parse(photoUri))
                     }
                     contacts.add(contact)
@@ -114,25 +137,29 @@ class MainActivity : AppCompatActivity() {
             cursor.close()
         }
 
-        val mAdapterView = contactsRecyclerViewAdapter(contacts, this)
-        contacts_recycler_view.adapter = mAdapterView
-        contacts_recycler_view.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        runOnUiThread {
+            val mAdapterView = contactsRecyclerViewAdapter(contacts, this)
+            contacts_recycler_view.adapter = mAdapterView
+            contacts_recycler_view.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        }
 
 
     }
 
     private fun setUpRecyclerView() {
 
-        val contentResolver: ContentResolver =applicationContext.contentResolver
+        val contentResolver: ContentResolver = applicationContext.contentResolver
 
         val contactList: MutableList<ContactDTO> = ArrayList()
 
 
-        val contacts = contentResolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null,
-            ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME+" ASC")
+        val contacts = contentResolver.query(
+            ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null,
+            ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " ASC"
+        )
 
 
-        while (contacts.moveToNext() ) {
+        while (contacts.moveToNext()) {
             val name = contacts.getString(contacts.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME))
 
             val number = contacts.getString(contacts.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
@@ -145,10 +172,9 @@ class MainActivity : AppCompatActivity() {
                 arrayOf(id), null
             )
 
-            while (cur1.moveToNext())
-            {
-                val email:String = cur1.getString(cur1.getColumnIndex(ContactsContract.CommonDataKinds.Email.ADDRESS))
-                Log.i("Email" ,name+ email)
+            while (cur1.moveToNext()) {
+                val email: String = cur1.getString(cur1.getColumnIndex(ContactsContract.CommonDataKinds.Email.ADDRESS))
+                Log.i("Email", name + email)
             }
 
             val obj = ContactDTO()

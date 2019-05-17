@@ -18,15 +18,15 @@ class ContactDTO() : Parcelable {
     }
 
 
-    var name = ""
+    var name:String? = ""
 
-    var number = ""
+    var number:String? = ""
 
     var image: Bitmap? = null
 
-    var id: String = ""
+    var id: String? = ""
 
-    var email: String = ""
+    var email: String? = ""
 
     constructor(parcel: Parcel) : this() {
         name = parcel.readString()
