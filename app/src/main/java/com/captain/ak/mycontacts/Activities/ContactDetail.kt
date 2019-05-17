@@ -35,6 +35,7 @@ class ContactDetail : AppCompatActivity() {
         }
         textview_userFrag_userName.text = contactDTO.name
 
-        Log.i("detail" , contactDTO!!.name)
+        back.setOnClickListener { onBackPressed() }
+
     }
 }
