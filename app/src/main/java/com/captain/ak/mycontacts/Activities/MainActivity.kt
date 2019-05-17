@@ -94,6 +94,7 @@ class MainActivity : AppCompatActivity() {
             override fun onPreExecute()
             {
                 progressDialog.setMessage("Please Wait")
+                progressDialog.setCanceledOnTouchOutside(false)
                 progressDialog.show()
             }
 

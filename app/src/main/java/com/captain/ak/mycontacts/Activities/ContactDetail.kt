@@ -6,8 +6,11 @@ import android.util.Log
 import android.view.View
 import com.captain.ak.mycontacts.DataClass.ContactDTO
 import com.captain.ak.mycontacts.R
+import kotlinx.android.synthetic.main.activity_contact_detail.*
 
 class ContactDetail : AppCompatActivity() {
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -18,6 +21,19 @@ class ContactDetail : AppCompatActivity() {
 
         val bundle = intent.extras
         val contactDTO = bundle!!.getParcelable<ContactDTO>("data")
+
+        textView_email.text = contactDTO!!.email
+        textView_id.text = contactDTO.id
+        textview_userFrag_phone.text = contactDTO.number
+        if (contactDTO!=null) {
+            imageview_userFrag_profileImage.setImageBitmap(contactDTO.image)
+        }
+        else
+        {
+            //imageview_userFrag_profileImage.setImageDrawable(resources.getDrawable(R.drawable.profile_image))
+
+        }
+        textview_userFrag_userName.text = contactDTO.name
 
         Log.i("detail" , contactDTO!!.name)
     }
