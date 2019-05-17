@@ -1,5 +1,6 @@
 package com.captain.ak.mycontacts.Activities
 
+import android.Manifest
 import android.content.ContentResolver
 import android.net.Uri
 import android.support.v7.app.AppCompatActivity
@@ -18,6 +19,11 @@ import android.text.TextUtils
 import android.widget.ArrayAdapter
 import android.app.ProgressDialog
 import android.R
+import android.app.Activity
+import android.content.pm.PackageManager
+import android.support.v4.app.ActivityCompat
+import android.support.v4.content.ContextCompat
+import android.widget.Toast
 
 
 class MainActivity : AppCompatActivity() {
@@ -40,15 +46,56 @@ class MainActivity : AppCompatActivity() {
             ContactsContract.Contacts.PHOTO_URI
         )
 
+    val MY_PERMISSIONS_REQUEST_READ_CONTACTS = 0
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(com.captain.ak.mycontacts.R.layout.activity_main)
 
 
-        object : AsyncTask<Void, Void, ArrayList<ContactDTO>>() {
-            override fun onPreExecute() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS)
+            != PackageManager.PERMISSION_GRANTED) {
 
-            }// End of onPreExecute method
+            ActivityCompat.requestPermissions(this,
+                    arrayOf(Manifest.permission.READ_CONTACTS),
+                    MY_PERMISSIONS_REQUEST_READ_CONTACTS)
+        } else {
+            loadContacts()
+        }
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        when(requestCode){
+            MY_PERMISSIONS_REQUEST_READ_CONTACTS ->{
+                if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                    loadContacts()
+                    Toast.makeText(this , "Permision Granted" , Toast.LENGTH_SHORT).show()
+                } else {
+
+                }
+                return
+            }
+        }
+    }
+
+    //***********************fun to load contacts***********************************************************//
+
+
+    fun loadContacts()
+    {
+        object : AsyncTask<Void, Void, ArrayList<ContactDTO>>() {
+
+            val progressDialog = ProgressDialog(this@MainActivity)
+
+
+
+
+            override fun onPreExecute()
+            {
+                progressDialog.setMessage("Please Wait")
+                progressDialog.show()
+            }
 
             @SuppressLint("WrongThread")
             override fun doInBackground(vararg params: Void): ArrayList<ContactDTO>? {
@@ -58,18 +105,17 @@ class MainActivity : AppCompatActivity() {
             }// End of doInBackground method
 
             override fun onPostExecute(result: ArrayList<ContactDTO>?) {
+                if (progressDialog.isShowing)
+                {
+                    progressDialog.dismiss()
+                }
 
             }//End of onPostExecute method
         }.execute()
 
     }
 
-    override fun onResume() {
-        super.onResume()
 
-        //setUpRecyclerView()
-        //setUpRecyclerView1()
-    }
 
     private fun setUpRecyclerView1() {
 
@@ -98,8 +144,7 @@ class MainActivity : AppCompatActivity() {
                     Log.i("Email", email)
                     ce.close()
                 }
-
-                // get the user's phone number
+                //get the users phone number
                 var phone: String? = ""
                 if (hasPhone > 0) {
                     val cp = cr.query(
@@ -118,8 +163,7 @@ class MainActivity : AppCompatActivity() {
 
                 // if the user user has an email or phone then add it to contacts
                 if ((!TextUtils.isEmpty(email) && android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
-                            && !email!!.equals(name, ignoreCase = true)) || !TextUtils.isEmpty(phone)
-                ) {
+                            && !email!!.equals(name, ignoreCase = true)) || !TextUtils.isEmpty(phone)) {
                     val contact = ContactDTO()
                     contact.name = name
                     contact.id = id
@@ -130,11 +174,10 @@ class MainActivity : AppCompatActivity() {
                     }
                     contacts.add(contact)
                 }
-
             } while (cursor.moveToNext())
 
-            // clean up cursor
             cursor.close()
+
         }
 
         runOnUiThread {
@@ -142,68 +185,6 @@ class MainActivity : AppCompatActivity() {
             contacts_recycler_view.adapter = mAdapterView
             contacts_recycler_view.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         }
-
-
-    }
-
-    private fun setUpRecyclerView() {
-
-        val contentResolver: ContentResolver = applicationContext.contentResolver
-
-        val contactList: MutableList<ContactDTO> = ArrayList()
-
-
-        val contacts = contentResolver.query(
-            ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null,
-            ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " ASC"
-        )
-
-
-        while (contacts.moveToNext()) {
-            val name = contacts.getString(contacts.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME))
-
-            val number = contacts.getString(contacts.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
-
-            val id = contacts.getString(contacts.getColumnIndex(ContactsContract.Contacts._ID))
-
-            val cur1 = contentResolver.query(
-                ContactsContract.CommonDataKinds.Email.CONTENT_URI, null,
-                ContactsContract.CommonDataKinds.Email.CONTACT_ID + " = ?",
-                arrayOf(id), null
-            )
-
-            while (cur1.moveToNext()) {
-                val email: String = cur1.getString(cur1.getColumnIndex(ContactsContract.CommonDataKinds.Email.ADDRESS))
-                Log.i("Email", name + email)
-            }
-
-            val obj = ContactDTO()
-
-            obj.name = name
-
-            obj.number = number
-
-            obj.id = id
-
-            val photoUri = contacts.getString(contacts.getColumnIndex(ContactsContract.CommonDataKinds.Phone.PHOTO_URI))
-
-            if (photoUri != null) {
-
-                obj.image = MediaStore.Images.Media.getBitmap(contentResolver, Uri.parse(photoUri))
-
-            }
-
-
-            contactList.add(obj)
-
-
-        }
-
-
-        val mAdapterView = contactsRecyclerViewAdapter(contactList, this)
-        contacts_recycler_view.adapter = mAdapterView
-        contacts_recycler_view.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-        contacts.close()
 
 
     }
