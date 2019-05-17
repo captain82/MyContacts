@@ -1,14 +1,21 @@
 package com.captain.ak.mycontacts.Adapter
 
 import android.content.Context
+import android.content.Intent
+import android.os.Bundle
+import android.support.v4.content.ContextCompat.startActivity
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
+import com.captain.ak.mycontacts.Activities.ContactDetail
 import com.captain.ak.mycontacts.DataClass.ContactDTO
 import com.captain.ak.mycontacts.R
+import java.io.Serializable
 
 class contactsRecyclerViewAdapter(items:List<ContactDTO>, val context: Context): RecyclerView.Adapter<contactsRecyclerViewAdapter.ViewHolder>() {
 
@@ -28,6 +35,24 @@ class contactsRecyclerViewAdapter(items:List<ContactDTO>, val context: Context):
     override fun onBindViewHolder(p0: ViewHolder, p1: Int) {
 
         p0.contactText.text =list[p1].name
+
+        val contactDTO = list[p1]
+
+        p0.detailText.setOnClickListener {
+            try {
+                val intent = Intent(this.context, ContactDetail::class.java)
+                val bundle = Bundle()
+                bundle.putParcelable("data", contactDTO)
+                intent.putExtras(bundle)
+                context.startActivity(intent)
+            }catch (e:Exception)
+            {
+                e.printStackTrace()
+                Toast.makeText(context,"Image size too large" , Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        Log.i("Details" , list[p1].email+" "+list[p1].id+" "+list[p1].name+" "+list[p1].number)
         if (list[p1].image!=null)
         {
             p0.contactText1.visibility = View.INVISIBLE
@@ -62,6 +87,8 @@ class contactsRecyclerViewAdapter(items:List<ContactDTO>, val context: Context):
         val contactText = view.findViewById<TextView>(R.id.contactText)
 
         val contactText1 = view.findViewById<TextView>(R.id.contactText1)
+
+        val detailText=view.findViewById<TextView>(R.id.detail_text_view)
 
 
 
